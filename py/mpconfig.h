@@ -702,7 +702,7 @@ typedef double mp_float_t;
 
 // Support for internal scheduler
 #ifndef MICROPY_ENABLE_SCHEDULER
-#define MICROPY_ENABLE_SCHEDULER (0)
+#define MICROPY_ENABLE_SCHEDULER (1)
 #endif
 
 // Maximum number of entries in the scheduler

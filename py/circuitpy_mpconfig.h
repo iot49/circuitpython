@@ -752,6 +752,13 @@ extern const struct _mp_obj_module_t wifi_module;
 #define WIFI_MODULE
 #endif
 
+#if CIRCUITPY_IOT
+extern const struct _mp_obj_module_t iot_module;
+#define IOT_MODULE { MP_ROM_QSTR(MP_QSTR_iot), MP_ROM_PTR(&iot_module) },
+#else
+#define IOT_MODULE
+#endif
+
 // Define certain native modules with weak links so they can be replaced with Python
 // implementations. This list may grow over time.
 #define MICROPY_PORT_BUILTIN_MODULE_WEAK_LINKS \
@@ -837,6 +844,7 @@ extern const struct _mp_obj_module_t wifi_module;
     USTACK_MODULE \
     WATCHDOG_MODULE \
     WIFI_MODULE \
+    IOT_MODULE \
 
 // If weak links are enabled, just include strong links in the main list of modules,
 // and also include the underscore alternate names.

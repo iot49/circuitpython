@@ -37,11 +37,8 @@
 // extern uint64_t common_hal_time_monotonic(void);
 
 
-//| .. currentmodule:: timer
-//|
-//| :class:`Chronometer` -- Measure elapsed time
-//| ====================================================================================
-//|
+//| class:`Chronometer` -- Measure elapsed time
+//|   """Measure elapsed time"""
 //| Chronometer measures the time since creation or reset.
 //|
 //| .. class:: Chronometer()

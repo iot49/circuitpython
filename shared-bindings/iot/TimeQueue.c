@@ -59,7 +59,7 @@ STATIC bool time_less_than(struct qentry *item, struct qentry *parent) {
     return item->time < parent->time;
 }
 
-//| .. currentmodule:: timer
+//| .. currentmodule:: iot
 //|
 //| :class:`TimeQueue` -- Queue with items sorted by time.
 //| ====================================================================================

@@ -41,7 +41,7 @@ enum {
 };
 
 
-//| .. currentmodule:: timer
+//| .. currentmodule:: iot
 //|
 //| :class:`Timer` -- Timed code execution via functions
 //| ====================================================================================
@@ -61,7 +61,7 @@ enum {
 //|
 //|   For example::
 //|
-//|     from timer import Timer
+//|     from iot import Timer
 //|
 //|     def cb(timer):
 //|         # Called when timer expires. Do whatever but keep it short!

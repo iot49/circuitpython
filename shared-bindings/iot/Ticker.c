@@ -35,7 +35,7 @@
 #include "shared-bindings/util.h"
 
 
-//| .. currentmodule:: timer
+//| .. currentmodule:: iot
 //|
 //| :class:`Ticker` -- Generate regular time intervals
 //| ====================================================================================

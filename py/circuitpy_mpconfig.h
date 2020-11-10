@@ -814,12 +814,14 @@ extern const struct _mp_obj_module_t iot_module;
     GAMEPADSHIFT_MODULE \
     GNSS_MODULE \
     I2CPERIPHERAL_MODULE \
+    IOT_MODULE \
     IPADDRESS_MODULE \
     JSON_MODULE \
     MATH_MODULE \
     _EVE_MODULE \
     MEMORYMONITOR_MODULE \
     MICROCONTROLLER_MODULE \
+    MSGPACK_MODULE \
     NEOPIXEL_WRITE_MODULE \
     NETWORK_MODULE \
       SOCKET_MODULE \
@@ -851,8 +853,6 @@ extern const struct _mp_obj_module_t iot_module;
     USTACK_MODULE \
     WATCHDOG_MODULE \
     WIFI_MODULE \
-    MSGPACK_MODULE \
-    IOT_MODULE \
 
 // If weak links are enabled, just include strong links in the main list of modules,
 // and also include the underscore alternate names.

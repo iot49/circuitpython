@@ -289,6 +289,9 @@ endif
 ifeq ($(CIRCUITPY_IOT),1)
 SRC_PATTERNS += iot/%
 endif
+ifeq ($(CIRCUITPY_GPIO),1)
+SRC_PATTERNS += gpio/%
+endif
 
 # All possible sources are listed here, and are filtered by SRC_PATTERNS in SRC_COMMON_HAL
 SRC_COMMON_HAL_ALL = \
@@ -373,8 +376,8 @@ SRC_COMMON_HAL_ALL = \
 	wifi/Radio.c \
 	wifi/ScannedNetworks.c \
 	wifi/__init__.c \
-	iot/Timer.c \
-	iot/__init__.c \
+	gpio/Timer.c \
+	gpio/__init__.c \
 
 ifeq ($(CIRCUITPY_BLEIO_HCI),1)
 # Helper code for _bleio HCI.

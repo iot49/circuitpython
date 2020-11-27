@@ -3,7 +3,6 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Scott Shawcroft
  * Copyright (c) 2018 Bernhard Boser
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,20 +24,40 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_NRF_COMMON_HAL_TIMER_TIMER_H
-#define MICROPY_INCLUDED_NRF_COMMON_HAL_TIMER_TIMER_H
-
-#include "nrfx_timer.h"
+#include <stdint.h>
 
 #include "py/obj.h"
+#include "py/runtime.h"
 
-typedef struct {
-    mp_obj_base_t base;
-    nrfx_timer_t *timer_instance;
-    mp_obj_t function;
-    bool fast;
-} timer_timer_obj_t;
+#include "shared-bindings/gpio/__init__.h"
+#include "shared-bindings/gpio/Timer.h"
 
-void timer_reset(void);
+//| :mod:`gpio` --- GPIO related modules
+//| ==================================================
+//|
+//| .. module:: gpio
+//|   :platform: nrf
+//|
+//| The `gpio` module provides class `Timer`.
+//|
+//| Libraries
+//|
+//| .. toctree::
+//|     :maxdepth: 3
+//|
+//|     Timer
+//|
+//| Timers should be deinitialized when no longer needed to free up resources.
+//|
 
-#endif // MICROPY_INCLUDED_NRF_COMMON_HAL_TIMER_TIMER_H
+STATIC const mp_rom_map_elem_t gpio_module_globals_table[] = {
+    { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_gpio) },
+    { MP_ROM_QSTR(MP_QSTR_Timer), MP_ROM_PTR(&gpio_timer_type) },
+};
+
+STATIC MP_DEFINE_CONST_DICT(gpio_module_globals, gpio_module_globals_table);
+
+const mp_obj_module_t gpio_module = {
+    .base = { &mp_type_module },
+    .globals = (mp_obj_dict_t*)&gpio_module_globals,
+};

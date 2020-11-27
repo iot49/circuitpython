@@ -30,7 +30,7 @@
 #include "py/objproperty.h"
 #include "py/runtime.h"
 #include "py/runtime0.h"
-#include "shared-bindings/iot/Timer.h"
+#include "shared-bindings/gpio/Timer.h"
 #include "shared-bindings/util.h"
 
 #define MP_OBJ_IS_METH(o) (MP_OBJ_IS_OBJ(o) && (((mp_obj_base_t*)MP_OBJ_TO_PTR(o))->type->name == MP_QSTR_bound_method))
@@ -41,7 +41,7 @@ enum {
 };
 
 
-//| .. currentmodule:: iot
+//| .. currentmodule:: gpio
 //|
 //| :class:`Timer` -- Timed code execution via functions
 //| ====================================================================================
@@ -61,7 +61,7 @@ enum {
 //|
 //|   For example::
 //|
-//|     from iot import Timer
+//|     from gpio import Timer
 //|
 //|     def cb(timer):
 //|         # Called when timer expires. Do whatever but keep it short!
@@ -72,7 +72,7 @@ enum {
 //|     t = Timer(interval=0.5, function=cb, mode=Timer.PERIODIC)
 //|     t.start()
 //|
-STATIC mp_obj_t timer_timer_make_new(const mp_obj_type_t *type, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
+STATIC mp_obj_t gpio_timer_make_new(const mp_obj_type_t *type, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     enum { ARG_interval, ARG_function, ARG_mode, ARG_fast };
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_interval, MP_ARG_KW_ONLY | MP_ARG_OBJ,  {.u_obj  = mp_const_none} },
@@ -84,8 +84,8 @@ STATIC mp_obj_t timer_timer_make_new(const mp_obj_type_t *type, size_t n_args, c
     mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
 
     // create timer
-    timer_timer_obj_t *self = m_new_obj(timer_timer_obj_t);
-    self->base.type = &timer_timer_type;
+    gpio_timer_obj_t *self = m_new_obj(gpio_timer_obj_t);
+    self->base.type = &gpio_timer_type;
     self->fast = args[ARG_fast].u_bool;
 
     // callback function
@@ -104,7 +104,7 @@ STATIC mp_obj_t timer_timer_make_new(const mp_obj_type_t *type, size_t n_args, c
     if (interval <= 0) mp_raise_ValueError(translate("interval must be positive"));
     if (interval > 4294.967) mp_raise_ValueError(translate("interval must be <= 3600"));
 
-    common_hal_timer_timer_construct(self, (uint32_t)(interval*1000000),
+    common_hal_gpio_timer_construct(self, (uint32_t)(interval*1000000),
                                    args[ARG_mode].u_int == TIMER_MODE_ONESHOT);
     return (mp_obj_t)self;
 }
@@ -120,90 +120,90 @@ STATIC mp_obj_t timer_timer_make_new(const mp_obj_type_t *type, size_t n_args, c
 //|      Automatically deinitializes the hardware when exiting a context. See
 //|      :ref:`lifetime-and-contextmanagers` for more info.
 //|
-STATIC mp_obj_t timer_timer_obj___exit__(size_t n_args, const mp_obj_t *args) {
+STATIC mp_obj_t gpio_timer_obj___exit__(size_t n_args, const mp_obj_t *args) {
     (void)n_args;
-    common_hal_timer_timer_deinit(args[0]);
+    common_hal_gpio_timer_deinit(args[0]);
     return mp_const_none;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(timer_timer___exit___obj, 4, 4, timer_timer_obj___exit__);
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(gpio_timer___exit___obj, 4, 4, gpio_timer_obj___exit__);
 
 //|   .. method:: deinit()
 //|
 //|      Deinitializes the Timer and releases any hardware resources for reuse.
 //|
-STATIC mp_obj_t timer_timer_deinit(mp_obj_t self_in) {
-    timer_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
+STATIC mp_obj_t gpio_timer_deinit(mp_obj_t self_in) {
+    gpio_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
     self->function = NULL;
-    common_hal_timer_timer_deinit(self);
+    common_hal_gpio_timer_deinit(self);
     return mp_const_none;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(timer_timer_deinit_obj, timer_timer_deinit);
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(gpio_timer_deinit_obj, gpio_timer_deinit);
 
 //|   .. attribute:: elapsed_time
 //|
 //|     Elapsed time in seconds (float). Micro-second resolution.
 //|
-STATIC mp_obj_t timer_timer_obj_get_elapsed_time(mp_obj_t self_in) {
-    timer_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    if (common_hal_timer_timer_deinited(self)) {
+STATIC mp_obj_t gpio_timer_obj_get_elapsed_time(mp_obj_t self_in) {
+    gpio_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    if (common_hal_gpio_timer_deinited(self)) {
         raise_deinited_error();
     }
-    return mp_obj_new_float(common_hal_timer_timer_get_elapsed_time(self)/1000000.0);
+    return mp_obj_new_float(common_hal_gpio_timer_get_elapsed_time(self)/1000000.0);
 }
-MP_DEFINE_CONST_FUN_OBJ_1(timer_timer_get_elapsed_time_obj, timer_timer_obj_get_elapsed_time);
+MP_DEFINE_CONST_FUN_OBJ_1(gpio_timer_get_elapsed_time_obj, gpio_timer_obj_get_elapsed_time);
 
 //|   .. method:: start
 //|
 //|     Start timer. Restart if already running.
 //|
-STATIC mp_obj_t timer_timer_obj_start(mp_obj_t self_in) {
-    timer_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    if (common_hal_timer_timer_deinited(self)) {
+STATIC mp_obj_t gpio_timer_obj_start(mp_obj_t self_in) {
+    gpio_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    if (common_hal_gpio_timer_deinited(self)) {
         raise_deinited_error();
     }
-    common_hal_timer_timer_start(self);
+    common_hal_gpio_timer_start(self);
     return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_1(timer_timer_start_obj, timer_timer_obj_start);
+MP_DEFINE_CONST_FUN_OBJ_1(gpio_timer_start_obj, gpio_timer_obj_start);
 
 //|   .. method:: cancel
 //|
 //|     Cancel timer.
 //|
-STATIC mp_obj_t timer_timer_obj_cancel(mp_obj_t self_in) {
-    timer_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    if (common_hal_timer_timer_deinited(self)) {
+STATIC mp_obj_t gpio_timer_obj_cancel(mp_obj_t self_in) {
+    gpio_timer_obj_t *self = MP_OBJ_TO_PTR(self_in);
+    if (common_hal_gpio_timer_deinited(self)) {
         raise_deinited_error();
     }
-    common_hal_timer_timer_cancel(self);
+    common_hal_gpio_timer_cancel(self);
     return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_1(timer_timer_cancel_obj, timer_timer_obj_cancel);
+MP_DEFINE_CONST_FUN_OBJ_1(gpio_timer_cancel_obj, gpio_timer_obj_cancel);
 
-const mp_obj_property_t timer_timer_elapsed_time_obj = {
+const mp_obj_property_t gpio_timer_elapsed_time_obj = {
     .base.type = &mp_type_property,
-    .proxy = {(mp_obj_t)&timer_timer_get_elapsed_time_obj,
+    .proxy = {(mp_obj_t)&gpio_timer_get_elapsed_time_obj,
               (mp_obj_t)&mp_const_none_obj},
 };
 
-STATIC const mp_rom_map_elem_t timer_timer_locals_dict_table[] = {
+STATIC const mp_rom_map_elem_t gpio_timer_locals_dict_table[] = {
     // Methods
-    { MP_ROM_QSTR(MP_QSTR_deinit),   MP_ROM_PTR(&timer_timer_deinit_obj) },
+    { MP_ROM_QSTR(MP_QSTR_deinit),   MP_ROM_PTR(&gpio_timer_deinit_obj) },
     { MP_ROM_QSTR(MP_QSTR___enter__), MP_ROM_PTR(&default___enter___obj) },
-    { MP_ROM_QSTR(MP_QSTR___exit__), MP_ROM_PTR(&timer_timer___exit___obj) },
-    { MP_ROM_QSTR(MP_QSTR_start),    MP_ROM_PTR(&timer_timer_start_obj) },
-    { MP_ROM_QSTR(MP_QSTR_cancel),     MP_ROM_PTR(&timer_timer_cancel_obj) },
+    { MP_ROM_QSTR(MP_QSTR___exit__), MP_ROM_PTR(&gpio_timer___exit___obj) },
+    { MP_ROM_QSTR(MP_QSTR_start),    MP_ROM_PTR(&gpio_timer_start_obj) },
+    { MP_ROM_QSTR(MP_QSTR_cancel),     MP_ROM_PTR(&gpio_timer_cancel_obj) },
     // Properties
-    { MP_ROM_QSTR(MP_QSTR_elapsed_time), MP_ROM_PTR(&timer_timer_elapsed_time_obj) },
+    { MP_ROM_QSTR(MP_QSTR_elapsed_time), MP_ROM_PTR(&gpio_timer_elapsed_time_obj) },
     // Constants
     { MP_ROM_QSTR(MP_QSTR_ONESHOT),  MP_ROM_INT(TIMER_MODE_ONESHOT) },
     { MP_ROM_QSTR(MP_QSTR_PERIODIC), MP_ROM_INT(TIMER_MODE_PERIODIC) },
 };
-STATIC MP_DEFINE_CONST_DICT(timer_timer_locals_dict, timer_timer_locals_dict_table);
+STATIC MP_DEFINE_CONST_DICT(gpio_timer_locals_dict, gpio_timer_locals_dict_table);
 
-const mp_obj_type_t timer_timer_type = {
+const mp_obj_type_t gpio_timer_type = {
     { &mp_type_type },
     .name = MP_QSTR_Timer,
-    .make_new = timer_timer_make_new,
-    .locals_dict = (mp_obj_dict_t*)&timer_timer_locals_dict,
+    .make_new = gpio_timer_make_new,
+    .locals_dict = (mp_obj_dict_t*)&gpio_timer_locals_dict,
 };

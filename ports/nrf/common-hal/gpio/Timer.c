@@ -25,7 +25,7 @@
  * THE SOFTWARE.
  */
 
-#include "shared-bindings/iot/Timer.h"
+#include "shared-bindings/gpio/Timer.h"
 #include "peripherals/nrf/timers.h"
 #include "py/mperrno.h"
 #include "py/runtime.h"
@@ -35,7 +35,7 @@
 
 STATIC void timer_event_handler(nrf_timer_event_t event_type, void *p_context) {
     if (event_type != NRF_TIMER_EVENT_COMPARE0) return;
-    timer_timer_obj_t *timer_obj = (timer_timer_obj_t*)p_context;
+    gpio_timer_obj_t *timer_obj = (gpio_timer_obj_t*)p_context;
     mp_obj_t function = timer_obj->function;
     if (function != NULL) {
         if (timer_obj->fast) {
@@ -52,7 +52,7 @@ STATIC void timer_event_handler(nrf_timer_event_t event_type, void *p_context) {
     }
 }
 
-void common_hal_timer_timer_construct(timer_timer_obj_t *self,
+void common_hal_gpio_timer_construct(gpio_timer_obj_t *self,
                                            uint32_t interval, bool one_shot) {
     // Find a free timer instance.
     self->timer_instance = nrf_peripherals_allocate_timer();
@@ -96,25 +96,25 @@ void common_hal_timer_timer_construct(timer_timer_obj_t *self,
             enable_interrupts);
 }
 
-void common_hal_timer_timer_deinit(timer_timer_obj_t *self) {
-    common_hal_timer_timer_cancel(self);
+void common_hal_gpio_timer_deinit(gpio_timer_obj_t *self) {
+    common_hal_gpio_timer_cancel(self);
     nrf_peripherals_free_timer(self->timer_instance);
     self->timer_instance = NULL;
 }
 
-bool common_hal_timer_timer_deinited(timer_timer_obj_t *self) {
+bool common_hal_gpio_timer_deinited(gpio_timer_obj_t *self) {
     return self->timer_instance == NULL;
 }
 
-uint32_t common_hal_timer_timer_get_elapsed_time(timer_timer_obj_t *self) {
+uint32_t common_hal_gpio_timer_get_elapsed_time(gpio_timer_obj_t *self) {
     uint32_t interval = nrfx_timer_capture(self->timer_instance, NRF_TIMER_CC_CHANNEL1);
     return interval;
 }
 
-void common_hal_timer_timer_start(timer_timer_obj_t *self) {
+void common_hal_gpio_timer_start(gpio_timer_obj_t *self) {
     nrfx_timer_enable(self->timer_instance);
 }
 
-void common_hal_timer_timer_cancel(timer_timer_obj_t *self) {
+void common_hal_gpio_timer_cancel(gpio_timer_obj_t *self) {
     nrfx_timer_disable(self->timer_instance);
 }

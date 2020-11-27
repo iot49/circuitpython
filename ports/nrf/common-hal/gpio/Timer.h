@@ -1,9 +1,9 @@
 /*
- * This file is part of the Micro Python project, http://micropython.org/
+ * This file is part of the MicroPython project, http://micropython.org/
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Glenn Ruben Bakke
+ * Copyright (c) 2016 Scott Shawcroft
  * Copyright (c) 2018 Bernhard Boser
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,25 +25,20 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_TIMER_H
-#define MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_TIMER_H
+#ifndef MICROPY_INCLUDED_NRF_COMMON_HAL_GPIO_TIMER_H
+#define MICROPY_INCLUDED_NRF_COMMON_HAL_GPIO_TIMER_H
 
-#include "common-hal/iot/Timer.h"
+#include "nrfx_timer.h"
 
-// Type object used in Python. Should be shared between ports.
-extern const mp_obj_type_t timer_timer_type;
+#include "py/obj.h"
 
-// Initializes the hardware peripheral.
-extern void common_hal_timer_timer_construct(timer_timer_obj_t *self,
-                                               uint32_t period, bool one_shot);
+typedef struct {
+    mp_obj_base_t base;
+    nrfx_timer_t *timer_instance;
+    mp_obj_t function;
+    bool fast;
+} gpio_timer_obj_t;
 
-extern void common_hal_timer_timer_deinit(timer_timer_obj_t *self);
-extern bool common_hal_timer_timer_deinited(timer_timer_obj_t *self);
+void timer_reset(void);
 
-// Return elapsed time since timer last started (or expired, if periodic) [us]
-extern uint32_t common_hal_timer_timer_get_elapsed_time(timer_timer_obj_t *self);
-
-extern void common_hal_timer_timer_start(timer_timer_obj_t *self);
-extern void common_hal_timer_timer_cancel(timer_timer_obj_t *self);
-
-#endif // MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_TIMER_H
+#endif // MICROPY_INCLUDED_NRF_COMMON_HAL_GPIO_TIMER_H

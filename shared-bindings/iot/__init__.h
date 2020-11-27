@@ -24,11 +24,18 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_TIMER___INIT___H
-#define MICROPY_INCLUDED_SHARED_BINDINGS_TIMER___INIT___H
+#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_IOT___INIT___H
+#define MICROPY_INCLUDED_SHARED_BINDINGS_IOT___INIT___H
 
 #include "py/obj.h"
+#include <stdint.h>
+#include <stdbool.h>
 
-// Nothing now.
+void shared_module_iot_dupterm(mp_obj_t terminal);
+mp_obj_t shared_module_iot_terminal(void);
 
-#endif  // MICROPY_INCLUDED_SHARED_BINDINGS_TIMER___INIT___H
+char common_hal_dupterm_read(void);                // read single char
+bool common_hal_dupterm_bytes_available(void);
+void common_hal_dupterm_write_substring(uint8_t* text, uint32_t length);
+
+#endif  // MICROPY_INCLUDED_SHARED_BINDINGS_IOT___INIT___H

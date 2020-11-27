@@ -35,15 +35,14 @@
 #include "shared-bindings/iot/TimeQueue.h"
 #include "shared-bindings/iot/Ticker.h"
 
-//| :mod:`timer` --- Support for timers and measuring time
-//| ========================================================
+//| :mod:`iot` --- Miscellaneous classes and functions
+//| ==================================================
 //|
-//| .. module:: timer
-//|   :synopsis: Support for timers
-//|   :platform: NRF52840
+//| .. module:: iot
+//|   :synopsis: Miscellaneous
+//|   :platform: all
 //|
-//| The `timer` module provides class `Timer` used for timed code execution
-//| via callbacks and class `Chronometer` for measuring time.
+//| The `iot` module provides class `Chronometer` for measuring time.
 //|
 //| Libraries
 //|
@@ -58,12 +57,26 @@
 //| Timers should be deinitialized when no longer needed to free up resources.
 //|
 
+
+//| def dupterm(io: terminal) -> None:
+//|     """Add/remove secondary terminal."""
+//|     ...
+//|
+mp_obj_t iot_dupterm(size_t n_args, const mp_obj_t *args) {
+    if (n_args == 1) shared_module_iot_dupterm(args[0]);
+    return shared_module_iot_terminal();
+}
+
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(iot_dupterm_obj, 0, 1, iot_dupterm);
+
 STATIC const mp_rom_map_elem_t iot_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_iot) },
     { MP_ROM_QSTR(MP_QSTR_Chronometer), MP_ROM_PTR(&timer_chronometer_type) },
     { MP_ROM_QSTR(MP_QSTR_Timer), MP_ROM_PTR(&timer_timer_type) },
     { MP_ROM_QSTR(MP_QSTR_TimeQueue), MP_ROM_PTR(&timer_time_queue_type) },
     { MP_ROM_QSTR(MP_QSTR_Ticker), MP_ROM_PTR(&timer_ticker_type) },
+
+    { MP_ROM_QSTR(MP_QSTR_dupterm), MP_ROM_PTR(&iot_dupterm_obj) },
 };
 
 STATIC MP_DEFINE_CONST_DICT(iot_module_globals, iot_module_globals_table);

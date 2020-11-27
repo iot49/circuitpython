@@ -760,6 +760,7 @@ extern const struct _mp_obj_module_t msgpack_module;
 #endif
 
 #if CIRCUITPY_IOT
+#define MICROPY_PY_OS_DUPTERM (1)
 extern const struct _mp_obj_module_t iot_module;
 #define IOT_MODULE { MP_ROM_QSTR(MP_QSTR_iot), MP_ROM_PTR(&iot_module) },
 #else

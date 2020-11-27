@@ -229,7 +229,7 @@ STATIC mp_obj_t time_queue_unary_op(mp_unary_op_t op, mp_obj_t self_in) {
     }
 }
 
-const mp_obj_property_t timer_time_queue_peek_time_obj = {
+const mp_obj_property_t iot_time_queue_peek_time_obj = {
     .base.type = &mp_type_property,
     .proxy = {(mp_obj_t)&mod_time_queue_peek_time_obj,
               (mp_obj_t)&mp_const_none_obj},
@@ -241,7 +241,7 @@ STATIC const mp_rom_map_elem_t time_queue_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_pop), MP_ROM_PTR(&mod_time_queue_pop_obj) },
     { MP_ROM_QSTR(MP_QSTR_get), MP_ROM_PTR(&mod_time_queue_get_obj) },
     // Property
-    { MP_ROM_QSTR(MP_QSTR_peek_time), MP_ROM_PTR(&timer_time_queue_peek_time_obj) },
+    { MP_ROM_QSTR(MP_QSTR_peek_time), MP_ROM_PTR(&iot_time_queue_peek_time_obj) },
 
     #if DEBUG
     { MP_ROM_QSTR(MP_QSTR_dump), MP_ROM_PTR(&mod_time_queue_dump_obj) },
@@ -250,7 +250,7 @@ STATIC const mp_rom_map_elem_t time_queue_locals_dict_table[] = {
 
 STATIC MP_DEFINE_CONST_DICT(time_queue_locals_dict, time_queue_locals_dict_table);
 
-const mp_obj_type_t timer_time_queue_type = {
+const mp_obj_type_t iot_time_queue_type = {
     { &mp_type_type },
     .name = MP_QSTR_time_queue,
     .make_new = time_queue_make_new,

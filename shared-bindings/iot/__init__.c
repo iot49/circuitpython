@@ -70,9 +70,9 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(iot_dupterm_obj, 0, 1, iot_dupterm);
 
 STATIC const mp_rom_map_elem_t iot_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_iot) },
-    { MP_ROM_QSTR(MP_QSTR_Chronometer), MP_ROM_PTR(&timer_chronometer_type) },
-    { MP_ROM_QSTR(MP_QSTR_TimeQueue), MP_ROM_PTR(&timer_time_queue_type) },
-    { MP_ROM_QSTR(MP_QSTR_Ticker), MP_ROM_PTR(&timer_ticker_type) },
+    { MP_ROM_QSTR(MP_QSTR_Chronometer), MP_ROM_PTR(&iot_chronometer_type) },
+    { MP_ROM_QSTR(MP_QSTR_TimeQueue), MP_ROM_PTR(&iot_time_queue_type) },
+    { MP_ROM_QSTR(MP_QSTR_Ticker), MP_ROM_PTR(&iot_ticker_type) },
 
     { MP_ROM_QSTR(MP_QSTR_dupterm), MP_ROM_PTR(&iot_dupterm_obj) },
 };

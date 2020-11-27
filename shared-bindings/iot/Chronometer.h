@@ -24,16 +24,16 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_CHRONOMETER_H
-#define MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_CHRONOMETER_H
+#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_IOT_CHRONOMETER_H
+#define MICROPY_INCLUDED_SHARED_BINDINGS_IOT_CHRONOMETER_H
 
 typedef struct {
     mp_obj_base_t base;
     // -elapsed time when stopped, basis compared to time.monotonic() otherwise
     int64_t start_time;
 
-} timer_chronometer_obj_t;
+} iot_chronometer_obj_t;
 
-extern const mp_obj_type_t timer_chronometer_type;
+extern const mp_obj_type_t iot_chronometer_type;
 
-#endif // MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_CHRONOMETER_H
+#endif // MICROPY_INCLUDED_SHARED_BINDINGS_IOT_CHRONOMETER_H

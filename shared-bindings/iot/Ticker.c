@@ -49,7 +49,7 @@
 //|   param float period: ticker period.
 //|   param float offset: start time (default: now).
 //|
-STATIC mp_obj_t timer_ticker_make_new(const mp_obj_type_t *type, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
+STATIC mp_obj_t iot_ticker_make_new(const mp_obj_type_t *type, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     enum { ARG_period, ARG_offset };
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_period, MP_ARG_OBJ | MP_ARG_REQUIRED },
@@ -62,8 +62,8 @@ STATIC mp_obj_t timer_ticker_make_new(const mp_obj_type_t *type, size_t n_args, 
     mp_float_t period = mp_obj_get_float(args[ARG_period].u_obj);
     mp_float_t offset = mp_obj_get_float(args[ARG_offset].u_obj);
 
-    timer_ticker_obj_t *self = m_new_obj(timer_ticker_obj_t);
-    self->base.type = &timer_ticker_type;
+    iot_ticker_obj_t *self = m_new_obj(iot_ticker_obj_t);
+    self->base.type = &iot_ticker_type;
     self->period = (long)(1000.0*period);
     self->start_time = common_hal_time_monotonic() + (long)(offset);
 
@@ -74,31 +74,31 @@ STATIC mp_obj_t timer_ticker_make_new(const mp_obj_type_t *type, size_t n_args, 
 //|
 //|     Time to next occurance in seconds (float).
 //|
-STATIC mp_obj_t timer_ticker_obj_get_next_time(mp_obj_t self_in) {
-    timer_ticker_obj_t *self = MP_OBJ_TO_PTR(self_in);
+STATIC mp_obj_t iot_ticker_obj_get_next_time(mp_obj_t self_in) {
+    iot_ticker_obj_t *self = MP_OBJ_TO_PTR(self_in);
     uint64_t now = common_hal_time_monotonic();
     uint64_t period = self->period;
     // avoid 64-bit remainder calculation
     while (self->start_time < now) self->start_time += period;
     return mp_obj_new_float(0.001*(self->start_time - now));
 }
-MP_DEFINE_CONST_FUN_OBJ_1(timer_ticker_get_next_time_obj, timer_ticker_obj_get_next_time);
+MP_DEFINE_CONST_FUN_OBJ_1(iot_ticker_get_next_time_obj, iot_ticker_obj_get_next_time);
 
-const mp_obj_property_t timer_ticker_next_time_obj = {
+const mp_obj_property_t iot_ticker_next_time_obj = {
     .base.type = &mp_type_property,
-    .proxy = {(mp_obj_t)&timer_ticker_get_next_time_obj,
+    .proxy = {(mp_obj_t)&iot_ticker_get_next_time_obj,
               (mp_obj_t)&mp_const_none_obj},
 };
 
-STATIC const mp_rom_map_elem_t timer_ticker_locals_dict_table[] = {
+STATIC const mp_rom_map_elem_t iot_ticker_locals_dict_table[] = {
     // Properties
-    { MP_ROM_QSTR(MP_QSTR_next_time), MP_ROM_PTR(&timer_ticker_next_time_obj) },
+    { MP_ROM_QSTR(MP_QSTR_next_time), MP_ROM_PTR(&iot_ticker_next_time_obj) },
 };
-STATIC MP_DEFINE_CONST_DICT(timer_ticker_locals_dict, timer_ticker_locals_dict_table);
+STATIC MP_DEFINE_CONST_DICT(iot_ticker_locals_dict, iot_ticker_locals_dict_table);
 
-const mp_obj_type_t timer_ticker_type = {
+const mp_obj_type_t iot_ticker_type = {
     { &mp_type_type },
     .name = MP_QSTR_Ticker,
-    .make_new = timer_ticker_make_new,
-    .locals_dict = (mp_obj_dict_t*)&timer_ticker_locals_dict,
+    .make_new = iot_ticker_make_new,
+    .locals_dict = (mp_obj_dict_t*)&iot_ticker_locals_dict,
 };

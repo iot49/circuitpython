@@ -24,15 +24,15 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_TICKER_H
-#define MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_TICKER_H
+#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_IOT_TICKER_H
+#define MICROPY_INCLUDED_SHARED_BINDINGS_IOT_TICKER_H
 
 typedef struct {
     mp_obj_base_t base;
     uint64_t start_time;
     uint64_t period;
-} timer_ticker_obj_t;
+} iot_ticker_obj_t;
 
-extern const mp_obj_type_t timer_ticker_type;
+extern const mp_obj_type_t iot_ticker_type;
 
-#endif // MICROPY_INCLUDED_SHARED_BINDINGS_TIMER_TICKER_H
+#endif // MICROPY_INCLUDED_SHARED_BINDINGS_IOT_TICKER_H

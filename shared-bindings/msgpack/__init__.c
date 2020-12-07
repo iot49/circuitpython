@@ -110,12 +110,13 @@ STATIC mp_obj_t mod_msgpack_pack(size_t n_args, const mp_obj_t *pos_args, mp_map
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(mod_msgpack_pack_obj, 1, mod_msgpack_pack);
 
-//| def unpack(buffer: ReadableBuffer, *, ext_hook: Function=None, use_list: bool=True) -> Any:
+//| def unpack(buffer: ReadableBuffer, *, ext_hook: Function=None, use_list: bool=True) -> object:
 //|     """Unpack and return one object from buffer.
 //|     :param ~_typing.ReadableBuffer buffer: buffer to read from
 //|     :param Optional[~_typing.Function] ext_hook: function called for objects in
 //|            msgpack ext format.
 //|     :param Optional[bool] use_list: return array as list or tuple (use_list=False).
+//|     :return object: object read from buffer.
 //|     """
 
 STATIC mp_obj_t mod_msgpack_unpack(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {

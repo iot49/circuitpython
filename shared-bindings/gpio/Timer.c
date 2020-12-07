@@ -94,7 +94,7 @@ STATIC mp_obj_t gpio_timer_make_new(const mp_obj_type_t *type, size_t n_args, co
     } else if (args[ARG_function].u_obj == mp_const_none) {
         self->function = NULL;
     } else {
-        mp_raise_ValueError(translate("function must be a function"));
+        mp_raise_ValueError(translate("function argument must be a function"));
     }
 
     // convert interval to 32-bits

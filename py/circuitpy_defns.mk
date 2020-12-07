@@ -408,6 +408,7 @@ $(filter $(SRC_PATTERNS), \
 	math/__init__.c \
 	microcontroller/RunMode.c \
 	msgpack/__init__.c \
+	msgpack/ExtType.c \
 	iot/Chronometer.c \
 	iot/Ticker.c \
 	iot/TimeQueue.c \

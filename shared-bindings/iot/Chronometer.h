@@ -30,6 +30,7 @@
 typedef struct {
     mp_obj_base_t base;
     // -elapsed time when stopped, basis compared to time.monotonic() otherwise
+    // [ns]
     int64_t start_time;
 
 } iot_chronometer_obj_t;

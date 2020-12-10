@@ -69,7 +69,7 @@ STATIC bool time_less_than(struct qentry *item, struct qentry *parent) {
 //| .. class:: TimeQueue(max_length)
 //|
 //|   Create a TimeQueue with the specified capacity. Present implementation is
-//|   backed by common_hal_time_monotonic().
+//|   backed by common_hal_time_monotonic_ns().
 //|
 //|   param int max_length: maximum number of items the queue can hold.
 //|
@@ -141,7 +141,7 @@ STATIC mp_obj_t mod_time_queue_after(const mp_obj_t self_in, const mp_obj_t time
         mp_raise_IndexError(translate("queue overflow"));
     }
     mp_uint_t l = heap->len;
-    heap->items[l].time = common_hal_time_monotonic() + (long)(1e3*mp_obj_get_float(time));
+    heap->items[l].time = common_hal_time_monotonic_ns() + (long)(1e9*mp_obj_get_float(time));
     heap->items[l].callback = callback;
     heap_siftdown(heap, 0, heap->len);
     heap->len++;
@@ -203,8 +203,8 @@ STATIC mp_obj_t mod_time_queue_peek_time(mp_obj_t self_in) {
         mp_raise_IndexError(translate("queue is empty"));
     }
     struct qentry *item = &heap->items[0];
-    int64_t delta = item->time - common_hal_time_monotonic();
-    return mp_obj_new_float(0.001*delta);
+    int64_t delta = item->time - common_hal_time_monotonic_ns();
+    return mp_obj_new_float(1e-9*delta);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(mod_time_queue_peek_time_obj, mod_time_queue_peek_time);
 

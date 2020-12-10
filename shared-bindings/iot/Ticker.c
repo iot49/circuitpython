@@ -64,8 +64,8 @@ STATIC mp_obj_t iot_ticker_make_new(const mp_obj_type_t *type, size_t n_args, co
 
     iot_ticker_obj_t *self = m_new_obj(iot_ticker_obj_t);
     self->base.type = &iot_ticker_type;
-    self->period = (long)(1000.0*period);
-    self->start_time = common_hal_time_monotonic() + (long)(offset);
+    self->period = (long)(1e9*period);
+    self->start_time = common_hal_time_monotonic_ns() + (long)(offset);
 
     return MP_OBJ_FROM_PTR(self);
 }
@@ -76,7 +76,7 @@ STATIC mp_obj_t iot_ticker_make_new(const mp_obj_type_t *type, size_t n_args, co
 //|
 STATIC mp_obj_t iot_ticker_obj_get_next_time(mp_obj_t self_in) {
     iot_ticker_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    uint64_t now = common_hal_time_monotonic();
+    uint64_t now = common_hal_time_monotonic_ns();
     uint64_t period = self->period;
     // avoid 64-bit remainder calculation
     while (self->start_time < now) self->start_time += period;

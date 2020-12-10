@@ -34,9 +34,6 @@
 #include "shared-bindings/time/__init__.h"
 #include "shared-bindings/util.h"
 
-// extern uint64_t common_hal_time_monotonic(void);
-
-
 //| class:`Chronometer` -- Measure elapsed time
 //|   """Measure elapsed time"""
 //| Chronometer measures the time since creation or reset.
@@ -74,7 +71,7 @@ STATIC mp_obj_t iot_chronometer_make_new(const mp_obj_type_t *type, size_t n_arg
 
     iot_chronometer_obj_t *self = m_new_obj(iot_chronometer_obj_t);
     self->base.type = &iot_chronometer_type;
-    self->start_time = common_hal_time_monotonic();
+    self->start_time = common_hal_time_monotonic_ns();
 
     return MP_OBJ_FROM_PTR(self);
 }
@@ -88,12 +85,12 @@ STATIC mp_obj_t iot_chronometer_obj_get_elapsed_time(mp_obj_t self_in) {
     float time_delta;
     if (self->start_time > 0) {
         // running
-        time_delta = (int64_t)common_hal_time_monotonic() - self->start_time;
+        time_delta = (int64_t)common_hal_time_monotonic_ns() - self->start_time;
     } else {
         // stopped. start_time is elapsed time so far, negative.
         time_delta = -self->start_time;
     }
-    return mp_obj_new_float(time_delta/1000.0);
+    return mp_obj_new_float(1e-9*time_delta);
 }
 MP_DEFINE_CONST_FUN_OBJ_1(iot_chronometer_get_elapsed_time_obj, iot_chronometer_obj_get_elapsed_time);
 
@@ -104,7 +101,7 @@ MP_DEFINE_CONST_FUN_OBJ_1(iot_chronometer_get_elapsed_time_obj, iot_chronometer_
 STATIC mp_obj_t iot_chronometer_obj_stop(mp_obj_t self_in) {
     iot_chronometer_obj_t *self = MP_OBJ_TO_PTR(self_in);
     if (self->start_time > 0)
-        self->start_time = self->start_time - (int64_t)common_hal_time_monotonic();
+        self->start_time = self->start_time - (int64_t)common_hal_time_monotonic_ns();
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(iot_chronometer_stop_obj, iot_chronometer_obj_stop);
@@ -116,7 +113,7 @@ MP_DEFINE_CONST_FUN_OBJ_1(iot_chronometer_stop_obj, iot_chronometer_obj_stop);
 STATIC mp_obj_t iot_chronometer_obj_resume(mp_obj_t self_in) {
     iot_chronometer_obj_t *self = MP_OBJ_TO_PTR(self_in);
     if (self->start_time < 0)
-        self->start_time = self->start_time + common_hal_time_monotonic();
+        self->start_time = self->start_time + common_hal_time_monotonic_ns();
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(iot_chronometer_resume_obj, iot_chronometer_obj_resume);
@@ -127,7 +124,7 @@ MP_DEFINE_CONST_FUN_OBJ_1(iot_chronometer_resume_obj, iot_chronometer_obj_resume
 //|
 STATIC mp_obj_t iot_chronometer_obj_reset(mp_obj_t self_in) {
     iot_chronometer_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    self->start_time = common_hal_time_monotonic();
+    self->start_time = common_hal_time_monotonic_ns();
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(iot_chronometer_reset_obj, iot_chronometer_obj_reset);

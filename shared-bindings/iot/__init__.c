@@ -28,6 +28,8 @@
 
 #include "py/obj.h"
 #include "py/runtime.h"
+#include "supervisor/usb.h"
+#include "supervisor/filesystem.h"
 
 #include "shared-bindings/iot/__init__.h"
 #include "shared-bindings/iot/Chronometer.h"
@@ -57,7 +59,37 @@
 //|
 
 
-//| def dupterm(io: terminal) -> None:
+//| def usb_ejected() -> bool:
+//|     """Return usb flash drive status if usb available, None otherwise."""
+//|     ...
+//|
+mp_obj_t iot_usb_ejected(void) {
+    #ifdef USB_AVAILABLE
+    return mp_obj_new_bool(usb_msc_ejected());
+    #endif
+
+    // no usb, return None
+    return mp_const_none;
+}
+
+MP_DEFINE_CONST_FUN_OBJ_0(iot_usb_ejected_obj, iot_usb_ejected);
+
+//| def flash_writable_by_python(writable: bool) -> None:
+//|     """Control write access to internal flash.
+//|     WARNING: Verify that usb_ejected() returns True before enabling
+//|              write access from Python!
+//|     Eject the board (CIRCUITPY drive) from the computer."""
+//|     ...
+//|
+mp_obj_t iot_flash_writable_by_python(mp_obj_t writable_by_python) {
+    filesystem_set_internal_writable_by_usb(!mp_obj_is_true(writable_by_python));
+    filesystem_set_internal_concurrent_write_protection(usb_msc_ejected());
+    return mp_const_none;
+}
+
+MP_DEFINE_CONST_FUN_OBJ_1(iot_flash_writable_by_python_obj, iot_flash_writable_by_python);
+
+//| def dupterm(io: terminal=None) -> None:
 //|     """Add/remove secondary terminal."""
 //|     ...
 //|
@@ -74,6 +106,8 @@ STATIC const mp_rom_map_elem_t iot_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_TimeQueue), MP_ROM_PTR(&iot_time_queue_type) },
     { MP_ROM_QSTR(MP_QSTR_Ticker), MP_ROM_PTR(&iot_ticker_type) },
 
+    { MP_ROM_QSTR(MP_QSTR_usb_ejected), MP_ROM_PTR(&iot_usb_ejected_obj) },
+    { MP_ROM_QSTR(MP_QSTR_flash_writable_by_python), MP_ROM_PTR(&iot_flash_writable_by_python_obj) },
     { MP_ROM_QSTR(MP_QSTR_dupterm), MP_ROM_PTR(&iot_dupterm_obj) },
 };
 

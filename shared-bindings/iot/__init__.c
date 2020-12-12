@@ -75,7 +75,8 @@ mp_obj_t iot_usb_ejected(void) {
 MP_DEFINE_CONST_FUN_OBJ_0(iot_usb_ejected_obj, iot_usb_ejected);
 
 //| def flash_writable_by_python(writable: bool) -> None:
-//|     """Control write access to internal flash.
+//|     """Depreceated. Use storage.remount
+//|     Control write access to internal flash.
 //|     WARNING: Verify that usb_ejected() returns True before enabling
 //|              write access from Python!
 //|     Eject the board (CIRCUITPY drive) from the computer."""

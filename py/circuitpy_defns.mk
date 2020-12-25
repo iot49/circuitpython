@@ -418,6 +418,7 @@ $(filter $(SRC_PATTERNS), \
 	iot/Chronometer.c \
 	iot/Ticker.c \
 	iot/TimeQueue.c \
+	iot/FinaliserProxy.c \
 	msgpack/ExtType.c \
 	supervisor/RunReason.c \
 )

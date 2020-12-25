@@ -39,35 +39,51 @@
 //|
 //| .. class:: FinaliserProxy(callback)
 //|
+//|   Example:
 //|
+//|   class FP(FinaliserProxy):
+//|       def __init__(self, cb, desc):
+//|           self.desc = desc
+//|           super().__init__(self.cleanup)
+//|
+//|       def cleanup(self, arg):
+//|           print("cleanup:", self.desc)
+//|
+//|   f = FP(None, "my custom class with finalizer")
+//|
+//|   print(f)
+//|
+//|   # ... use f, then
+//|   f = None   # or del f
+//|   # When the gc collects f, cleanup is called.
+
+
 STATIC mp_obj_t iot_finaliser_proxy_make_new(const mp_obj_type_t *type, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
-    enum { ARG_callback, ARG_arg };
+    enum { ARG_callback };
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_callback, MP_ARG_OBJ | MP_ARG_REQUIRED },
-        { MP_QSTR_arg, MP_ARG_OBJ,  {.u_obj  = mp_const_none} },
     };
 
     mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
     mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
 
-    if (!MP_OBJ_IS_FUN(args[ARG_callback].u_obj) && !MP_OBJ_IS_METH(args[ARG_callback].u_obj)) {
+    mp_obj_t callback = args[ARG_callback].u_obj;
+
+    if (!MP_OBJ_IS_FUN(callback) && !MP_OBJ_IS_METH(callback)) {
         mp_raise_ValueError(translate("function expected"));
     }
 
     iot_finaliser_proxy_obj_t *self = m_new_obj_with_finaliser(iot_finaliser_proxy_obj_t);
     self->base.type = &iot_finaliser_proxy_type;
-    self->callback = args[ARG_callback].u_obj;
-    self->arg = args[ARG_arg].u_obj;
+    self->callback = callback;
 
     return MP_OBJ_FROM_PTR(self);
 }
 
-//|
-//|
 STATIC mp_obj_t iot_finaliser_proxy_cleanup(mp_obj_t self_in) {
     iot_finaliser_proxy_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    // note: self does not point to derived class, hence we supply arg instead
-    mp_call_function_1(self->callback, self->arg);
+    // return value intentionally discarded
+    mp_call_function_0(self->callback);
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(iot_finaliser_proxy_cleanup_obj, iot_finaliser_proxy_cleanup);

@@ -33,7 +33,6 @@
 typedef struct {
     mp_obj_base_t base;
     mp_obj_t callback;
-    mp_obj_t arg;
 } iot_finaliser_proxy_obj_t;
 
 extern const mp_obj_type_t iot_finaliser_proxy_type;

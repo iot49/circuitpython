@@ -1465,6 +1465,10 @@ typedef double mp_float_t;
 #define MICROPY_PY_BTREE (0)
 #endif
 
+#ifndef MICROPY_PY_FINALISER_PROXY
+#define MICROPY_PY_FINALISER_PROXY (0)
+#endif
+
 /*****************************************************************************/
 /* Hooks for a port to add builtins                                          */
 

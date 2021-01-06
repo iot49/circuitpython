@@ -209,6 +209,7 @@ PY_EXTMOD_O_BASENAME = \
 	extmod/vfs_lfs.o \
 	extmod/utime_mphal.o \
 	extmod/uos_dupterm.o \
+	extmod/modfinaliserproxy.o \
 	lib/embed/abort_.o \
 	lib/utils/printf.o \
 

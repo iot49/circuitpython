@@ -130,6 +130,7 @@
 #define MICROPY_PY_UCTYPES                  (1)
 #define MICROPY_PY_UZLIB                    (1)
 #define MICROPY_PY_UJSON                    (1)
+#define MICROPY_PY_UMSGPACK                 (1)
 #define MICROPY_PY_URE                      (1)
 #define MICROPY_PY_URE_SUB                  (1)
 #define MICROPY_PY_UHEAPQ                   (1)

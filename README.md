@@ -1,5 +1,22 @@
 [![CI badge](https://github.com/micropython/micropython/workflows/unix%20port/badge.svg)](https://github.com/micropython/micropython/actions?query=branch%3Amaster+event%3Apush) [![Coverage badge](https://coveralls.io/repos/micropython/micropython/badge.png?branch=master)](https://coveralls.io/r/micropython/micropython?branch=master)
 
+Fork of MicroPython
+===================
+
+Branches:
+- `master`: tracks `micropython/master`
+- `mp`: main branch of this fork with features merged
+
+Feature braches (off `master`):
+- `esp32-uart-flow`: fixes esp32 uart flow control
+- `finaliser`: finalisers for objects defined in micropython
+- `mdns`: esp32 mdns server
+- `mp-msgpack`: subset of CPython msgpack
+- `uf2`: uf2 target for nrf port (PR)
+- `uid`: machine.unique_id() for nrf port (PR)
+
+Note: the same repo contains also a fork of `CircuitPython`. Switch to branch `iot` for more information.
+
 The MicroPython project
 =======================
 <p align="center">

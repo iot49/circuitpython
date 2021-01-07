@@ -3,7 +3,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Scott Shawcroft
+ * Copyright (c) 2018 Bernhard Boser
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,33 +24,40 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
-#define MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
-
-#include "common-hal/microcontroller/Pin.h"
-#include "nrfx_uarte.h"
+#include <stdint.h>
 
 #include "py/obj.h"
-#include "py/ringbuf.h"
+#include "py/runtime.h"
 
-typedef struct {
-    mp_obj_base_t base;
+#include "shared-bindings/gpio/__init__.h"
+#include "shared-bindings/gpio/Timer.h"
 
-    nrfx_uarte_t *uarte;
+//| :mod:`gpio` --- GPIO related modules
+//| ==================================================
+//|
+//| .. module:: gpio
+//|   :platform: nrf
+//|
+//| The `gpio` module provides class `Timer`.
+//|
+//| Libraries
+//|
+//| .. toctree::
+//|     :maxdepth: 3
+//|
+//|     Timer
+//|
+//| Timers should be deinitialized when no longer needed to free up resources.
+//|
 
-    uint32_t baudrate;
-    uint32_t timeout_ms;
+STATIC const mp_rom_map_elem_t gpio_module_globals_table[] = {
+    { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_gpio) },
+    { MP_ROM_QSTR(MP_QSTR_Timer), MP_ROM_PTR(&gpio_timer_type) },
+};
 
-    ringbuf_t ringbuf;
-    uint8_t rx_char;    // EasyDMA buf
-    bool rx_paused;     // set by irq if no space in rbuf
+STATIC MP_DEFINE_CONST_DICT(gpio_module_globals, gpio_module_globals_table);
 
-    uint8_t tx_pin_number;
-    uint8_t rx_pin_number;
-    uint8_t cts_pin_number;
-    uint8_t rts_pin_number;
-} busio_uart_obj_t;
-
-void uart_reset(void);
-
-#endif // MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
+const mp_obj_module_t gpio_module = {
+    .base = { &mp_type_module },
+    .globals = (mp_obj_dict_t*)&gpio_module_globals,
+};

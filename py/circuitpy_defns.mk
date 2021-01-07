@@ -292,6 +292,15 @@ endif
 ifeq ($(CIRCUITPY_PEW),1)
 SRC_PATTERNS += _pew/%
 endif
+ifeq ($(CIRCUITPY_MSGPACK),1)
+SRC_PATTERNS += msgpack/%
+endif
+ifeq ($(CIRCUITPY_IOT),1)
+SRC_PATTERNS += iot/%
+endif
+ifeq ($(CIRCUITPY_GPIO),1)
+SRC_PATTERNS += gpio/%
+endif
 
 # All possible sources are listed here, and are filtered by SRC_PATTERNS in SRC_COMMON_HAL
 SRC_COMMON_HAL_ALL = \
@@ -382,6 +391,8 @@ SRC_COMMON_HAL_ALL = \
 	wifi/Radio.c \
 	wifi/ScannedNetworks.c \
 	wifi/__init__.c \
+	gpio/Timer.c \
+	gpio/__init__.c \
 
 ifeq ($(CIRCUITPY_BLEIO_HCI),1)
 # Helper code for _bleio HCI.
@@ -412,6 +423,12 @@ $(filter $(SRC_PATTERNS), \
 	math/__init__.c \
 	microcontroller/ResetReason.c \
 	microcontroller/RunMode.c \
+	msgpack/__init__.c \
+	iot/Chronometer.c \
+	iot/Ticker.c \
+	iot/TimeQueue.c \
+	iot/FinaliserProxy.c \
+	msgpack/ExtType.c \
 	supervisor/RunReason.c \
 )
 
@@ -481,6 +498,7 @@ SRC_SHARED_MODULE_ALL = \
 	memorymonitor/AllocationAlarm.c \
 	memorymonitor/AllocationSize.c \
 	network/__init__.c \
+	msgpack/__init__.c \
 	os/__init__.c \
 	random/__init__.c \
 	rgbmatrix/RGBMatrix.c \
@@ -500,6 +518,7 @@ SRC_SHARED_MODULE_ALL = \
 	vectorio/Rectangle.c \
 	vectorio/VectorShape.c \
 	vectorio/__init__.c \
+	iot/__init__.c \
 
 # All possible sources are listed here, and are filtered by SRC_PATTERNS.
 SRC_SHARED_MODULE = $(filter $(SRC_PATTERNS), $(SRC_SHARED_MODULE_ALL))

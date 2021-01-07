@@ -3,7 +3,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Scott Shawcroft
+ * Copyright (c) 2017 Scott Shawcroft for Adafruit Industries
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#ifndef MICROPY_INCLUDED_SHARED_MODULE_MSGPACK___INIT___H
+#define MICROPY_INCLUDED_SHARED_MODULE_MSGPACK___INIT___H
 
-#ifndef MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
-#define MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
+#include "py/stream.h"
 
-#include "common-hal/microcontroller/Pin.h"
-#include "nrfx_uarte.h"
+void common_hal_msgpack_pack(mp_obj_t obj, mp_obj_t stream_obj, mp_obj_t default_handler);
+mp_obj_t common_hal_msgpack_unpack(mp_obj_t stream_obj, mp_obj_t ext_hook, bool use_list);
 
-#include "py/obj.h"
-#include "py/ringbuf.h"
-
-typedef struct {
-    mp_obj_base_t base;
-
-    nrfx_uarte_t *uarte;
-
-    uint32_t baudrate;
-    uint32_t timeout_ms;
-
-    ringbuf_t ringbuf;
-    uint8_t rx_char;    // EasyDMA buf
-    bool rx_paused;     // set by irq if no space in rbuf
-
-    uint8_t tx_pin_number;
-    uint8_t rx_pin_number;
-    uint8_t cts_pin_number;
-    uint8_t rts_pin_number;
-} busio_uart_obj_t;
-
-void uart_reset(void);
-
-#endif // MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
+#endif

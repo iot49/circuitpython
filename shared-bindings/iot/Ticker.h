@@ -1,9 +1,9 @@
 /*
- * This file is part of the MicroPython project, http://micropython.org/
+ * This file is part of the Micro Python project, http://micropython.org/
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Scott Shawcroft
+ * Copyright (c) 2018 Bernhard Boser
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,33 +24,15 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
-#define MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
-
-#include "common-hal/microcontroller/Pin.h"
-#include "nrfx_uarte.h"
-
-#include "py/obj.h"
-#include "py/ringbuf.h"
+#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_IOT_TICKER_H
+#define MICROPY_INCLUDED_SHARED_BINDINGS_IOT_TICKER_H
 
 typedef struct {
     mp_obj_base_t base;
+    uint64_t start_time;
+    uint64_t period;
+} iot_ticker_obj_t;
 
-    nrfx_uarte_t *uarte;
+extern const mp_obj_type_t iot_ticker_type;
 
-    uint32_t baudrate;
-    uint32_t timeout_ms;
-
-    ringbuf_t ringbuf;
-    uint8_t rx_char;    // EasyDMA buf
-    bool rx_paused;     // set by irq if no space in rbuf
-
-    uint8_t tx_pin_number;
-    uint8_t rx_pin_number;
-    uint8_t cts_pin_number;
-    uint8_t rts_pin_number;
-} busio_uart_obj_t;
-
-void uart_reset(void);
-
-#endif // MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
+#endif // MICROPY_INCLUDED_SHARED_BINDINGS_IOT_TICKER_H

@@ -1,9 +1,10 @@
 /*
- * This file is part of the MicroPython project, http://micropython.org/
+ * This file is part of the Micro Python project, http://micropython.org/
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Scott Shawcroft
+ * Copyright (c) 2016 Glenn Ruben Bakke
+ * Copyright (c) 2018 Bernhard Boser
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,33 +25,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
-#define MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
+#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_GPIO_TIMER_H
+#define MICROPY_INCLUDED_SHARED_BINDINGS_GPIO_TIMER_H
 
-#include "common-hal/microcontroller/Pin.h"
-#include "nrfx_uarte.h"
+#include "common-hal/gpio/Timer.h"
 
-#include "py/obj.h"
-#include "py/ringbuf.h"
+// Type object used in Python. Should be shared between ports.
+extern const mp_obj_type_t gpio_timer_type;
 
-typedef struct {
-    mp_obj_base_t base;
+// Initializes the hardware peripheral.
+extern void common_hal_gpio_timer_construct(gpio_timer_obj_t *self, uint32_t period, bool one_shot);
 
-    nrfx_uarte_t *uarte;
+extern void common_hal_gpio_timer_deinit(gpio_timer_obj_t *self);
+extern bool common_hal_gpio_timer_deinited(gpio_timer_obj_t *self);
 
-    uint32_t baudrate;
-    uint32_t timeout_ms;
+// Return elapsed time since timer last started (or expired, if periodic) [us]
+extern uint32_t common_hal_gpio_timer_get_elapsed_time(gpio_timer_obj_t *self);
 
-    ringbuf_t ringbuf;
-    uint8_t rx_char;    // EasyDMA buf
-    bool rx_paused;     // set by irq if no space in rbuf
+extern void common_hal_gpio_timer_start(gpio_timer_obj_t *self);
+extern void common_hal_gpio_timer_cancel(gpio_timer_obj_t *self);
 
-    uint8_t tx_pin_number;
-    uint8_t rx_pin_number;
-    uint8_t cts_pin_number;
-    uint8_t rts_pin_number;
-} busio_uart_obj_t;
-
-void uart_reset(void);
-
-#endif // MICROPY_INCLUDED_NRF_COMMON_HAL_BUSIO_UART_H
+#endif // MICROPY_INCLUDED_SHARED_BINDINGS_GPIO_TIMER_H

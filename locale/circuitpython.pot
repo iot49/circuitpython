@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-04 12:55-0600\n"
+"POT-Creation-Date: 2020-12-07 16:05-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -276,6 +276,10 @@ msgstr ""
 msgid "3-arg pow() not supported"
 msgstr ""
 
+#: shared-module/msgpack/__init__.c
+msgid "64 bit types"
+msgstr ""
+
 #: ports/atmel-samd/common-hal/countio/Counter.c
 #: ports/atmel-samd/common-hal/rotaryio/IncrementalEncoder.c
 msgid "A hardware interrupt channel is already in use"
@@ -303,8 +307,11 @@ msgid "All I2C peripherals are in use"
 msgstr ""
 
 #: ports/esp32s2/common-hal/countio/Counter.c
+<<<<<<< HEAD
+=======
 #: ports/esp32s2/common-hal/frequencyio/FrequencyIn.c
 #: ports/esp32s2/common-hal/rotaryio/IncrementalEncoder.c
+>>>>>>> msgpack
 msgid "All PCNT units in use"
 msgstr ""
 
@@ -2426,6 +2433,10 @@ msgstr ""
 msgid "circle can only be registered in one parent"
 msgstr ""
 
+#: shared-bindings/msgpack/ExtType.c
+msgid "code outside range 0~127"
+msgstr ""
+
 #: shared-bindings/displayio/Palette.c
 msgid "color buffer must be 3 bytes (RGB) or 4 bytes (RGB + pad byte)"
 msgstr ""
@@ -2508,6 +2519,10 @@ msgstr ""
 
 #: py/compile.c
 msgid "default 'except' must be last"
+msgstr ""
+
+#: shared-bindings/msgpack/__init__.c
+msgid "default is not a function"
 msgstr ""
 
 #: shared-bindings/audiobusio/PDMIn.c
@@ -2607,6 +2622,10 @@ msgstr ""
 
 #: py/compile.c
 msgid "expecting key:value for dict"
+msgstr ""
+
+#: shared-bindings/msgpack/__init__.c
+msgid "ext_hook is not a function"
 msgstr ""
 
 #: py/argcheck.c
@@ -3141,8 +3160,16 @@ msgstr ""
 msgid "no binding for nonlocal found"
 msgstr ""
 
+#: shared-module/msgpack/__init__.c
+msgid "no default packer"
+msgstr ""
+
 #: py/builtinimport.c
 msgid "no module named '%q'"
+msgstr ""
+
+#: shared-module/msgpack/__init__.c
+msgid "no packer"
 msgstr ""
 
 #: shared-bindings/displayio/FourWire.c shared-bindings/displayio/I2CDisplay.c
@@ -3156,6 +3183,10 @@ msgstr ""
 
 #: py/runtime.c
 msgid "no such attribute"
+msgstr ""
+
+#: shared-module/msgpack/__init__.c
+msgid "no unpacker found"
 msgstr ""
 
 #: ports/nrf/common-hal/_bleio/Connection.c
@@ -3378,7 +3409,11 @@ msgstr ""
 msgid "pow() with 3 arguments requires integers"
 msgstr ""
 
+<<<<<<< HEAD
+#: ports/esp32s2/boards/adafruit_esp32s2_eink_portal/mpconfigboard.h
+=======
 #: ports/esp32s2/boards/adafruit_magtag_2.9_grayscale/mpconfigboard.h
+>>>>>>> msgpack
 #: ports/esp32s2/boards/adafruit_metro_esp32s2/mpconfigboard.h
 #: ports/esp32s2/boards/electroniccats_bastwifi/mpconfigboard.h
 #: ports/esp32s2/boards/espressif_kaluga_1/mpconfigboard.h

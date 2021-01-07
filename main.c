@@ -517,6 +517,18 @@ STATIC int run_repl(void) {
     supervisor_allocation* heap = allocate_remaining_memory();
     start_mp(heap);
     autoreload_suspend();
+
+    // source /repl_init.py if it exists
+    // note: unlike boot.py and code.py, vm is not reset before entering repl
+    // PROBLEM: apparently runs only after usb is connected!
+    static const char * const repl_filenames[] = STRING_LIST("repl_init.py");
+    pyexec_result_t result;
+    result.return_code = 0;
+    result.exception_type = NULL;
+    result.exception_line = 0;
+    // ignore result (including exception)
+    maybe_run_list(repl_filenames, &result);
+
     new_status_color(REPL_RUNNING);
     if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {
         exit_code = pyexec_raw_repl();

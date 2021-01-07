@@ -774,6 +774,28 @@ extern const struct _mp_obj_module_t wifi_module;
 #define WIFI_MODULE
 #endif
 
+#if CIRCUITPY_MSGPACK
+extern const struct _mp_obj_module_t msgpack_module;
+#define MSGPACK_MODULE { MP_ROM_QSTR(MP_QSTR_msgpack), MP_ROM_PTR(&msgpack_module) },
+#else
+#define MSGPACK_MODULE
+#endif
+
+#if CIRCUITPY_IOT
+#define MICROPY_PY_OS_DUPTERM (1)
+extern const struct _mp_obj_module_t iot_module;
+#define IOT_MODULE { MP_ROM_QSTR(MP_QSTR_iot), MP_ROM_PTR(&iot_module) },
+#else
+#define IOT_MODULE
+#endif
+
+#if CIRCUITPY_GPIO
+extern const struct _mp_obj_module_t gpio_module;
+#define GPIO_MODULE { MP_ROM_QSTR(MP_QSTR_gpio), MP_ROM_PTR(&gpio_module) },
+#else
+#define GPIO_MODULE
+#endif
+
 // Define certain native modules with weak links so they can be replaced with Python
 // implementations. This list may grow over time.
 #define MICROPY_PORT_BUILTIN_MODULE_WEAK_LINKS \
@@ -823,13 +845,16 @@ extern const struct _mp_obj_module_t wifi_module;
     GAMEPAD_MODULE \
     GAMEPADSHIFT_MODULE \
     GNSS_MODULE \
+    GPIO_MODULE \
     I2CPERIPHERAL_MODULE \
+    IOT_MODULE \
     IPADDRESS_MODULE \
     JSON_MODULE \
     MATH_MODULE \
     _EVE_MODULE \
     MEMORYMONITOR_MODULE \
     MICROCONTROLLER_MODULE \
+    MSGPACK_MODULE \
     NEOPIXEL_WRITE_MODULE \
     NETWORK_MODULE \
       SOCKET_MODULE \

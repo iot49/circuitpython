@@ -34,6 +34,8 @@
 #include "supervisor/usb.h"
 #include "shared-bindings/microcontroller/Pin.h"
 
+#include "shared-bindings/iot/__init__.h"
+
 #include "tusb.h"
 
 /*
@@ -83,7 +85,11 @@ char serial_read(void) {
     common_hal_busio_uart_read(&debug_uart, (uint8_t*) &text, 1, &uart_errcode);
     return text;
 #else
-    return (char) tud_cdc_read_char();
+    if (common_hal_dupterm_bytes_available()) {
+        return common_hal_dupterm_read();
+    } else {
+        return (char) tud_cdc_read_char();
+    }
 #endif
 }
 
@@ -91,7 +97,7 @@ bool serial_bytes_available(void) {
 #if defined(DEBUG_UART_TX) && defined(DEBUG_UART_RX)
     return common_hal_busio_uart_rx_characters_available(&debug_uart) || (tud_cdc_available() > 0);
 #else
-    return tud_cdc_available() > 0;
+    return tud_cdc_available() > 0 || common_hal_dupterm_bytes_available();
 #endif
 }
 
@@ -109,6 +115,8 @@ void serial_write_substring(const char* text, uint32_t length) {
         count += tud_cdc_write(text + count, length - count);
         usb_background();
     }
+
+    common_hal_dupterm_write_substring((uint8_t*) text, length);
 
 #if defined(DEBUG_UART_TX) && defined(DEBUG_UART_RX)
     int uart_errcode;

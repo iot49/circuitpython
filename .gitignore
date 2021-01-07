@@ -1,3 +1,7 @@
+# mp branch custom
+###################
+.DS_Store
+
 # Compiled Sources
 ###################
 *.o

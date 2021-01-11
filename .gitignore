@@ -1,6 +1,7 @@
 # mp Branch Custom
 ###################
 .DS_Store
+.vscode
 
 # Compiled Sources
 ###################

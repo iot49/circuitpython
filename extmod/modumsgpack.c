@@ -41,12 +41,6 @@
 
 #define MP_OBJ_IS_METH(o) (MP_OBJ_IS_OBJ(o) && (((mp_obj_base_t*)MP_OBJ_TO_PTR(o))->type->name == MP_QSTR_bound_method))
 
-// no "py/objproperty.h"
-typedef struct _mp_obj_property_t {
-    mp_obj_base_t base;
-    mp_obj_t proxy[3]; // getter, setter, deleter
-} mp_obj_property_t;
-
 
 //////////////////////////////////////////////////////////////////////////////
 // ExtType
@@ -82,76 +76,28 @@ STATIC mp_obj_t mod_msgpack_exttype_make_new(const mp_obj_type_t *type, size_t n
     return MP_OBJ_FROM_PTR(self);
 }
 
-
-//|     code: int
-//|     """The type code, in range 0~127."""
-//|
-
-STATIC mp_obj_t mod_msgpack_exttype_get_code(mp_obj_t self_in) {
-    mod_msgpack_extype_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    return MP_OBJ_NEW_SMALL_INT(self->code);
-}
-MP_DEFINE_CONST_FUN_OBJ_1(mod_msgpack_exttype_get_code_obj, mod_msgpack_exttype_get_code);
-
-STATIC mp_obj_t mod_msgpack_exttype_set_code(mp_obj_t self_in, mp_obj_t code_in) {
-    mod_msgpack_extype_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    int code = mp_obj_get_int(code_in);
-    if (code < 0 || code > 127) {
-        mp_raise_ValueError(MP_ERROR_TEXT("code outside range 0~127"));
+STATIC void mod_msgpack_exttype_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest) {
+    if (dest[0] != MP_OBJ_NULL) {
+        // setter not implemented
+        return;
     }
-    self->code = code;
-    return mp_const_none;
+    if (attr == MP_QSTR_code) {
+        dest[0] = MP_OBJ_NEW_SMALL_INT(self_in->code);
+    } else if (attr == MP_QSTR_data) {
+        dest[0] = self_in->data;
+    }
 }
-MP_DEFINE_CONST_FUN_OBJ_2(mod_msgpack_exttype_set_code_obj, mod_msgpack_exttype_set_code);
-
-const mp_obj_property_t mod_msgpack_exttype_code_obj = {
-    .base.type = &mp_type_property,
-    .proxy = {(mp_obj_t)&mod_msgpack_exttype_get_code_obj,
-              (mp_obj_t)&mod_msgpack_exttype_set_code_obj,
-              mp_const_none},
-};
-
-//|     data: bytes
-//|     """Data."""
-//|
-
-STATIC mp_obj_t mod_msgpack_exttype_get_data(mp_obj_t self_in) {
-    mod_msgpack_extype_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    return self->data;
-}
-MP_DEFINE_CONST_FUN_OBJ_1(mod_msgpack_exttype_get_data_obj, mod_msgpack_exttype_get_data);
-
-STATIC mp_obj_t mod_msgpack_exttype_set_data(mp_obj_t self_in, mp_obj_t data_in) {
-    mod_msgpack_extype_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    self->data = data_in;
-    return mp_const_none;
-}
-MP_DEFINE_CONST_FUN_OBJ_2(mod_msgpack_exttype_set_data_obj, mod_msgpack_exttype_set_data);
-
-const mp_obj_property_t mod_msgpack_exttype_data_obj = {
-    .base.type = &mp_type_property,
-    .proxy = {(mp_obj_t)&mod_msgpack_exttype_get_data_obj,
-              (mp_obj_t)&mod_msgpack_exttype_set_data_obj,
-              mp_const_none},
-};
-
-STATIC mp_rom_map_elem_t mod_msgpack_exttype_locals_dict_table[] = {
-    // Properties
-    { MP_ROM_QSTR(MP_QSTR_code), MP_ROM_PTR(&mod_msgpack_exttype_code_obj) },
-    { MP_ROM_QSTR(MP_QSTR_data), MP_ROM_PTR(&mod_msgpack_exttype_data_obj) },
-};
-STATIC MP_DEFINE_CONST_DICT(mod_msgpack_exttype_locals_dict, mod_msgpack_exttype_locals_dict_table);
 
 const mp_obj_type_t mod_msgpack_exttype_type = {
     { &mp_type_type },
     .name = MP_QSTR_ExtType,
     .make_new = mod_msgpack_exttype_make_new,
-    .locals_dict = (mp_obj_dict_t*)&mod_msgpack_exttype_locals_dict,
+    .attr = mod_msgpack_exttype_attr,
 };
 
 
 //////////////////////////////////////////////////////////////////////////////
-// ExtType
+// pack/unpack
 
 void common_hal_msgpack_pack(mp_obj_t obj, mp_obj_t stream_obj, mp_obj_t default_handler);
 mp_obj_t common_hal_msgpack_unpack(mp_obj_t stream_obj, mp_obj_t ext_hook, bool use_list);

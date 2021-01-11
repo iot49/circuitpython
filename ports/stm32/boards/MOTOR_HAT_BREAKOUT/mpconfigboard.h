@@ -1,4 +1,4 @@
-#define MICROPY_HW_BOARD_NAME       "Motor Hat"
+#define MICROPY_HW_BOARD_NAME       "Motor Breakout Hat"
 #define MICROPY_HW_MCU_NAME         "STM32F405RG"
 
 #define MICROPY_HW_HAS_SWITCH       (0)
@@ -40,13 +40,13 @@
 #define MICROPY_HW_UART6_RX     (pin_C7)  // D5
 
 // UART REPL
-#define MICROPY_HW_UART_REPL        PYB_UART_3
+#define MICROPY_HW_UART_REPL        PYB_UART_6
 #define MICROPY_HW_UART_REPL_BAUD   115200
 
 // I2C busses
 #define MICROPY_HW_I2C1_NAME "I2C1"
-#define MICROPY_HW_I2C1_SCL (pin_B9)  // SCL
-#define MICROPY_HW_I2C1_SDA (pin_B8)  // SDA
+#define MICROPY_HW_I2C1_SCL (pin_B8)  // SCL
+#define MICROPY_HW_I2C1_SDA (pin_B9)  // SDA
 #define MICROPY_HW_I2C2_NAME "I2C2"
 #define MICROPY_HW_I2C2_SCL (pin_B10)  // TX
 #define MICROPY_HW_I2C2_SDA (pin_B11)  // RX

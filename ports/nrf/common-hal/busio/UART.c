@@ -173,6 +173,7 @@ void common_hal_busio_uart_construct(busio_uart_obj_t *self,
         mp_raise_ValueError(translate("Odd parity is not supported"));
     }
 
+    // what happens if onlyt rts or cts is specified?
     bool hwfc = rts != NULL || cts != NULL;
 
     nrfx_uarte_config_t config = {

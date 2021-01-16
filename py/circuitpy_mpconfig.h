@@ -96,11 +96,15 @@
 #define MICROPY_PY_BUILTINS_SLICE        (1)
 #define MICROPY_PY_BUILTINS_SLICE_ATTRS  (1)
 #define MICROPY_PY_BUILTINS_STR_UNICODE  (1)
+#define MICROPY_PY_BUILTINS_COMPILE      (1)
+#define MICROPY_PY_BUILTINS_EVAL_EXEC    (1)
+
 
 #define MICROPY_PY_CMATH                 (0)
 #define MICROPY_PY_COLLECTIONS           (1)
 #define MICROPY_PY_DESCRIPTORS           (1)
 #define MICROPY_PY_IO_FILEIO             (1)
+#define MICROPY_PY_IO_IOBASE             (1)
 #define MICROPY_PY_GC                    (1)
 // Supplanted by shared-bindings/math
 #define MICROPY_PY_MATH                  (0)

@@ -41,7 +41,8 @@
 //|
 //| Not implemented: 64-bit int, uint, float.
 //|
-//| Example 1:
+//| Example 1::
+//|
 //|    import msgpack
 //|    from io import BytesIO
 //|
@@ -50,7 +51,7 @@
 //|    b.seek(0)
 //|    print(msgpack.unpack(b))
 //|
-//| Example 2: handling objects
+//| Example 2: handling objects::
 //|
 //|    from msgpack import pack, unpack, ExtType
 //|    from io import BytesIO
@@ -78,17 +79,20 @@
 //|    buffer.seek(0)
 //|    decoded = unpack(buffer, ext_hook=decoder)
 //|    print(f"{data} -> {buffer.getvalue()} -> {decoded}")
+//|
 //| """
 //|
 
 //| def pack(obj: object, buffer: WriteableBuffer, *, default: Union[Callable[[object], None], None] = None) -> None:
 //|     """Ouput object to buffer in msgpack format.
+//|
 //|     :param object obj: Object to convert to msgpack format.
 //|     :param ~_typing.WriteableBuffer buffer: buffer to write into
 //|     :param Optional[~_typing.Callable[[object], None]] default:
 //|           function called for python objects that do not have
 //|           a representation in msgpack format.
 //|     """
+//|     ...
 //|
 STATIC mp_obj_t mod_msgpack_pack(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     enum { ARG_obj, ARG_buffer, ARG_default };
@@ -113,12 +117,15 @@ MP_DEFINE_CONST_FUN_OBJ_KW(mod_msgpack_pack_obj, 1, mod_msgpack_pack);
 
 //| def unpack(buffer: ReadableBuffer, *, ext_hook: Union[Callable[[int, bytes], object], None] = None, use_list: bool=True) -> object:
 //|     """Unpack and return one object from buffer.
+//|
 //|     :param ~_typing.ReadableBuffer buffer: buffer to read from
 //|     :param Optional[~_typing.Callable[[int, bytes], object]] ext_hook: function called for objects in
 //|            msgpack ext format.
 //|     :param Optional[bool] use_list: return array as list or tuple (use_list=False).
+//|
 //|     :return object: object read from buffer.
 //|     """
+//|     ...
 //|
 STATIC mp_obj_t mod_msgpack_unpack(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     enum { ARG_buffer, ARG_ext_hook, ARG_use_list };

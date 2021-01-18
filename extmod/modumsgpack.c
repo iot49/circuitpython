@@ -309,6 +309,18 @@ STATIC void pack(mp_obj_t obj, msgpack_stream_t *s, mp_obj_t default_handler) {
         // int
         int32_t x = MP_OBJ_SMALL_INT_VALUE(obj);
         pack_int(s, x);
+    } else if (obj == mp_const_none) {
+        write1(s, 0xc0);
+    } else if (obj == mp_const_false) {
+        write1(s, 0xc2);
+    } else if (obj == mp_const_true) {
+        write1(s, 0xc3);
+    } else if (mp_obj_is_float(obj)) {
+        union Float { mp_float_t f;  uint32_t u; };
+        union Float data;
+        data.f = mp_obj_float_get(obj);
+        write1(s, 0xca);
+        write4(s, data.u);
     } else if (MP_OBJ_IS_STR(obj)) {
         // string
         size_t len;
@@ -319,11 +331,6 @@ STATIC void pack(mp_obj_t obj, msgpack_stream_t *s, mp_obj_t default_handler) {
         mp_buffer_info_t bufinfo;
         mp_get_buffer_raise(ext->data, &bufinfo, MP_BUFFER_READ);
         pack_ext(s, ext->code, bufinfo.buf, bufinfo.len);
-    } else if (MP_OBJ_IS_TYPE(obj, &mp_type_bytes)) {
-        // bytes
-        mp_buffer_info_t bufinfo;
-        mp_get_buffer_raise(obj, &bufinfo, MP_BUFFER_READ);
-        pack_bin(s, bufinfo.buf, bufinfo.len);
     } else if (MP_OBJ_IS_TYPE(obj, &mp_type_tuple)) {
         // tuple
         mp_obj_tuple_t *self = MP_OBJ_TO_PTR(obj);
@@ -348,20 +355,12 @@ STATIC void pack(mp_obj_t obj, msgpack_stream_t *s, mp_obj_t default_handler) {
             pack(next->key, s, default_handler);
             pack(next->value, s, default_handler);
         }
-    } else if (mp_obj_is_float(obj)) {
-        union Float { mp_float_t f;  uint32_t u; };
-        union Float data;
-        data.f = mp_obj_float_get(obj);
-        write1(s, 0xca);
-        write4(s, data.u);
-    } else if (obj == mp_const_none) {
-        write1(s, 0xc0);
-    } else if (obj == mp_const_false) {
-        write1(s, 0xc2);
-    } else if (obj == mp_const_true) {
-        write1(s, 0xc3);
     } else {
-        if (default_handler != mp_const_none) {
+        mp_buffer_info_t bufinfo;
+        if (mp_get_buffer(obj, &bufinfo, MP_BUFFER_READ)) {
+            // bytes (bin type)
+            pack_bin(s, bufinfo.buf, bufinfo.len);
+        } else if (default_handler != mp_const_none) {
             // set default_handler to mp_const_none to avoid infinite recursion
             // this also precludes some valid outputs
             pack(mp_call_function_1(default_handler, obj), s, mp_const_none);
@@ -396,7 +395,15 @@ STATIC mp_obj_t unpack_bytes(msgpack_stream_t *s, size_t size) {
     vstr_t vstr;
     vstr_init_len(&vstr, size);
     byte *p = (byte*)vstr.buf;
-    read(s, p, size);
+    // read in chunks: (some drivers - e.g. UART) limit the
+    // maximum number of bytes that can be read at once
+    // read(s, p, size);
+    while (size > 0) {
+        int n = size > 256 ? 256 : size;
+        read(s, p, n);
+        size -= n;
+        p += n;
+    }
     return mp_obj_new_str_from_vstr(&mp_type_bytes, &vstr);
 }
 

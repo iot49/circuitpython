@@ -35,14 +35,13 @@
 typedef struct {
     mp_obj_base_t base;
     mp_obj_t callback;
-    mp_obj_t arg;
 } finaliser_proxy_obj_t;
 
 extern const mp_obj_type_t finaliser_proxy_type;
 
 
 STATIC mp_obj_t finaliser_proxy_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args) {
-    mp_arg_check_num(n_args, n_kw, 2, 2, false);
+    mp_arg_check_num(n_args, n_kw, 1, 1, false);
 
     if (!MP_OBJ_IS_FUN(args[0]) && !MP_OBJ_IS_METH(args[0])) {
         mp_raise_ValueError(MP_ERROR_TEXT("function expected"));
@@ -51,7 +50,6 @@ STATIC mp_obj_t finaliser_proxy_make_new(const mp_obj_type_t *type, size_t n_arg
     finaliser_proxy_obj_t *self = m_new_obj_with_finaliser(finaliser_proxy_obj_t);
     self->base.type = &finaliser_proxy_type;
     self->callback = args[0];
-    self->arg = args[1];
 
     return MP_OBJ_FROM_PTR(self);
 }
@@ -60,7 +58,7 @@ STATIC mp_obj_t finaliser_proxy_make_new(const mp_obj_type_t *type, size_t n_arg
 STATIC mp_obj_t finaliser_proxy_cleanup(mp_obj_t self_in) {
     finaliser_proxy_obj_t *self = MP_OBJ_TO_PTR(self_in);
     // note: self does not point to derived class, hence we supply arg instead
-    mp_call_function_1(self->callback, self->arg);
+    mp_call_function_0(self->callback0);
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(finaliser_proxy_cleanup_obj, finaliser_proxy_cleanup);

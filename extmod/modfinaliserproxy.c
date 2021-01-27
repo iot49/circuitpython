@@ -58,7 +58,7 @@ STATIC mp_obj_t finaliser_proxy_make_new(const mp_obj_type_t *type, size_t n_arg
 STATIC mp_obj_t finaliser_proxy_cleanup(mp_obj_t self_in) {
     finaliser_proxy_obj_t *self = MP_OBJ_TO_PTR(self_in);
     // note: self does not point to derived class, hence we supply arg instead
-    mp_call_function_0(self->callback0);
+    mp_call_function_0(self->callback);
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(finaliser_proxy_cleanup_obj, finaliser_proxy_cleanup);

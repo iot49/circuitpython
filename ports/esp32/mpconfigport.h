@@ -35,6 +35,7 @@
 #define MICROPY_READER_VFS                  (1)
 #define MICROPY_ENABLE_GC                   (1)
 #define MICROPY_ENABLE_FINALISER            (1)
+#define MICROPY_PY_FINALISER_PROXY          (MICROPY_ENABLE_FINALISER)
 #define MICROPY_STACK_CHECK                 (1)
 #define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF (1)
 #define MICROPY_KBD_EXCEPTION               (1)

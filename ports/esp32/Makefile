@@ -35,7 +35,7 @@ MICROPY_PY_BTREE = 1
 MICROPY_VFS_FAT = 1
 MICROPY_VFS_LFS2 = 1
 
-FROZEN_MANIFEST ?= boards/manifest.py
+FROZEN_MANIFEST ?= boards/manifest_release.py
 
 # include py core make definitions
 include $(TOP)/py/py.mk

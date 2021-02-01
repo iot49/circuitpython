@@ -84,3 +84,7 @@
 #define MBOOT_I2C_SCL (pin_B8)
 #define MBOOT_I2C_SDA (pin_B9)
 #define MBOOT_I2C_ALTFUNC (4)
+
+// Network configuration (for Airlift compatiblity)
+#define MICROPY_PY_USOCKET          (0)
+#define MICROPY_PY_NETWORK          (0)

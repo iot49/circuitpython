@@ -692,6 +692,13 @@ extern const struct _mp_obj_module_t time_module;
 #define TIME_MODULE_ALT_NAME
 #endif
 
+#if CIRCUITPY_UTIME
+extern const struct _mp_obj_module_t utime_module;
+#define UTIME_MODULE           { MP_OBJ_NEW_QSTR(MP_QSTR_utime), (mp_obj_t)&utime_module },
+#else
+#define UTIME_MODULE
+#endif
+
 #if CIRCUITPY_TOUCHIO
 extern const struct _mp_obj_module_t touchio_module;
 #define TOUCHIO_MODULE         { MP_OBJ_NEW_QSTR(MP_QSTR_touchio), (mp_obj_t)&touchio_module },
@@ -886,6 +893,7 @@ extern const struct _mp_obj_module_t gpio_module;
     SUPERVISOR_MODULE \
     TOUCHIO_MODULE \
     UHEAP_MODULE \
+    UTIME_MODULE \
     USB_HID_MODULE \
     USB_MIDI_MODULE \
     USTACK_MODULE \

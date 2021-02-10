@@ -276,6 +276,9 @@ endif
 ifeq ($(CIRCUITPY_TIME),1)
 SRC_PATTERNS += time/%
 endif
+ifeq ($(CIRCUITPY_UTIME),1)
+SRC_PATTERNS += utime/%
+endif
 ifeq ($(CIRCUITPY_TOUCHIO),1)
 SRC_PATTERNS += touchio/%
 endif
@@ -432,11 +435,12 @@ $(filter $(SRC_PATTERNS), \
 	microcontroller/ResetReason.c \
 	microcontroller/RunMode.c \
 	msgpack/__init__.c \
+	msgpack/ExtType.c \
 	iot/Chronometer.c \
 	iot/Ticker.c \
 	iot/TimeQueue.c \
 	iot/FinaliserProxy.c \
-	msgpack/ExtType.c \
+	utime/__init__.c \
 	supervisor/RunReason.c \
 )
 

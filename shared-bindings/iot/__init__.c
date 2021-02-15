@@ -65,8 +65,9 @@
 //|     ...
 //|
 mp_obj_t iot_dupterm(size_t n_args, const mp_obj_t *args) {
+    mp_obj_t res = shared_module_iot_terminal();
     if (n_args == 1) shared_module_iot_dupterm(args[0]);
-    return shared_module_iot_terminal();
+    return res;
 }
 
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(iot_dupterm_obj, 0, 1, iot_dupterm);

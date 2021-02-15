@@ -51,6 +51,7 @@ BASE_CFLAGS = \
 	-DCIRCUITPY_SOFTWARE_SAFE_MODE=0x0ADABEEF \
 	-DCIRCUITPY_CANARY_WORD=0xADAF00 \
 	-DCIRCUITPY_SAFE_RESTART_WORD=0xDEADBEEF \
+	-DCIRCUITPY_BOARD_ID="\"$(BOARD)\"" \
 	--param max-inline-insns-single=500
 
 #        Use these flags to debug build times and header includes.
@@ -234,6 +235,9 @@ endif
 ifeq ($(CIRCUITPY_RANDOM),1)
 SRC_PATTERNS += random/%
 endif
+ifeq ($(CIRCUITPY_RP2PIO),1)
+SRC_PATTERNS += rp2pio/%
+endif
 ifeq ($(CIRCUITPY_ROTARYIO),1)
 SRC_PATTERNS += rotaryio/%
 endif
@@ -290,6 +294,9 @@ SRC_PATTERNS += usb_hid/%
 endif
 ifeq ($(CIRCUITPY_USB_MIDI),1)
 SRC_PATTERNS += usb_midi/%
+endif
+ifeq ($(CIRCUITPY_USB_VENDOR),1)
+SRC_PATTERNS += usb_vendor/%
 endif
 ifeq ($(CIRCUITPY_USTACK),1)
 SRC_PATTERNS += ustack/%
@@ -393,6 +400,7 @@ SRC_COMMON_HAL_ALL = \
 	socketpool/Socket.c \
 	ssl/__init__.c \
 	ssl/SSLContext.c \
+	ssl/SSLSocket.c \
 	supervisor/Runtime.c \
 	supervisor/__init__.c \
 	watchdog/WatchDogMode.c \

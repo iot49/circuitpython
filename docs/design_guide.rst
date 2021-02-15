@@ -165,6 +165,24 @@ use what.
 Here is more info on properties from
 `Python <https://docs.python.org/3/library/functions.html#property>`_.
 
+Exceptions and asserts
+--------------------------------------------------------------------------------
+
+Raise an appropriate `Exception <https://docs.python.org/3/library/exceptions.html#bltin-exceptions>`_,
+along with a useful message, whenever a critical test or other condition fails.
+
+Example::
+
+    if not 0 <= pin <= 7:
+        raise ValueError("Pin number must be 0-7.")
+
+If memory is constrained and a more compact method is needed, use `assert`
+instead.
+
+Example::
+
+    assert 0 <= pin <= 7, "Pin number must be 0-7."
+
 Design for compatibility with CPython
 --------------------------------------------------------------------------------
 
@@ -520,7 +538,9 @@ properties.
 +-----------------------+-----------------------+-------------------------------------------------------------------------+
 | ``temperature``       | float                 | degrees centigrade                                                      |
 +-----------------------+-----------------------+-------------------------------------------------------------------------+
-| ``eCO2``              | float                 | equivalent CO2 in ppm                                                   |
+| ``CO2``               | float                 | measured CO2 in ppm                                                     |
++-----------------------+-----------------------+-------------------------------------------------------------------------+
+| ``eCO2``              | float                 | equivalent/estimated CO2 in ppm (estimated from some other measurement) |
 +-----------------------+-----------------------+-------------------------------------------------------------------------+
 | ``TVOC``              | float                 | Total Volatile Organic Compounds in ppb                                 |
 +-----------------------+-----------------------+-------------------------------------------------------------------------+
